@@ -19,6 +19,7 @@ use std::time::Duration;
 mod ui;
 
 mod exercise;
+mod progress;
 mod run;
 mod verify;
 
@@ -53,6 +54,11 @@ fn main() {
                 .alias("h")
                 .about("Returns a hint for the current exercise")
                 .arg(Arg::with_name("name").required(true).index(1)),
+        )
+        .subcommand(
+            SubCommand::with_name("progress")
+                .alias("p")
+                .about("Outputs the progress of the current user")
         )
         .get_matches();
 
@@ -138,6 +144,10 @@ fn main() {
     if matches.subcommand_name().is_none() {
         let text = fs::read_to_string("default_out.txt").unwrap();
         println!("{}", text);
+    }
+
+    if matches.subcommand_matches("progress").is_some() {
+        progress::print_progress();
     }
 }
 
